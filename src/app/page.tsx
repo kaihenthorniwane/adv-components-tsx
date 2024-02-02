@@ -7,7 +7,10 @@ import Input from "@/components/Input";
 import { useRef } from "react";
 
 export default function Home() {
-  const nameInputRef = useRef<HTMLInputElement>(null);
+  function handleSave(data: unknown) {
+    const extractedData = data as { name: string; age: string };
+    console.log(extractedData);
+  }
 
   return (
     <main className="flex flex-col items-center">
@@ -22,18 +25,13 @@ export default function Home() {
           This is button
         </Button>
         <Container as={Button}>Text</Container> */}
-        <Form>
+        <Form onSave={handleSave}>
           <Input
             label={"nme"}
             id={"Your Name"}
             placeholder={"Firstname Lastname"}
-            ref={nameInputRef}
           />
-          <Input
-            label={"name"}
-            id={"Your Name"}
-            placeholder={"Firstname Lastname"}
-          />
+          <Input label={"age"} id={"Your Age"} type={"number"} />
           <Button mode="button">Save</Button>
         </Form>
       </div>
