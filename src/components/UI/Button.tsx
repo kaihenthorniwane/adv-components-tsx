@@ -17,5 +17,12 @@ export default function Button(props: ButtonProps) {
   if (mode === "anchor") {
     return <a {...props}>{children}</a>;
   }
-  return <button {...props}>{children}</button>;
+  return (
+    <button
+      className="bg-[#260a50] text-white py-3 px-6 rounded-2xl"
+      {...props}
+    >
+      {children}
+    </button>
+  );
 }
