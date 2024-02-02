@@ -1,16 +1,20 @@
+import { ComponentPropsWithoutRef, forwardRef } from "react";
+
 type InputProps = {
   label: string;
   id: string;
-  placeholder: string;
-};
+} & ComponentPropsWithoutRef<"input">;
 
-export default function Input(props: InputProps) {
-  const { id, label, placeholder } = props;
-
+const InputWithRef = forwardRef<HTMLInputElement, InputProps>(function Input(
+  { id, label, ...props },
+  ref
+) {
   return (
     <div className="flex flex-col">
       <label htmlFor={id}>{label}</label>
-      <input id={id} placeholder={placeholder} />
+      <input id={id} name={id} {...props} ref={ref} />
     </div>
   );
-}
+});
+
+export default InputWithRef;
