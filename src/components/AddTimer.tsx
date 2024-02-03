@@ -2,12 +2,15 @@ import Input from "./UI/Input";
 import { useRef } from "react";
 import Form, { FormAPI } from "./UI/Form";
 import Button from "./UI/Button";
-
+import { useTimersContext, type Timer } from "@/store/timers-context";
 export default function AddTimer() {
   const form = useRef<FormAPI>(null);
+  const timersContextValue = useTimersContext();
+  const { addTimer } = timersContextValue;
+
   function handleSaveTimer(data: unknown) {
-    const extractedData = data as { name: string; duration: string };
-    console.log(extractedData);
+    const extractedData = data as Timer;
+    addTimer({ duration: +extractedData.duration, name: extractedData.name });
     form.current?.clear();
   }
   return (

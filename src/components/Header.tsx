@@ -7,7 +7,14 @@ export default function Header() {
   return (
     <header className="flex justify-between items-center">
       <h1 className="text-4xl">ReactTimer</h1>
-      <Button mode="button">
+      <Button
+        onClick={
+          timersContext.isRunning
+            ? timersContext.stopTimers
+            : timersContext.startTimers
+        }
+        mode="button"
+      >
         {timersContext.isRunning ? "Stop" : "Start"}
       </Button>
     </header>

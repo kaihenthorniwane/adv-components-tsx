@@ -18,10 +18,12 @@ export default function Home() {
 
   return (
     <main className="flex flex-col items-center">
-      <div className="flex flex-col w-full max-w-screen-sm p-5  gap-5">
+      <div className="flex flex-col w-full max-w-screen-sm p-5  gap-8">
         <TimersContextProvider>
-          <Header />
-          <AddTimer />
+          <div className="flex flex-col gap-5">
+            <Header />
+            <AddTimer />
+          </div>
           <Timers />
         </TimersContextProvider>
       </div>
