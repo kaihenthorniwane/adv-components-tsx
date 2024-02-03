@@ -1,4 +1,4 @@
-import { createContext, useContext, type ReactNode } from "react";
+import { createContext, useContext, useReducer, type ReactNode } from "react";
 
 type Timer = {
   name: string;
@@ -17,6 +17,10 @@ type TimersContextValue = TimersState & {
 };
 
 const TimersContext = createContext<TimersContextValue | null>(null);
+const initialState: TimersState = {
+  isRunning: false,
+  timers: [],
+};
 
 export function useTimersContext() {
   const timersContext = useContext(TimersContext);
@@ -30,20 +34,65 @@ type TimersContextProviderProps = {
   children: ReactNode;
 };
 
+type AddTimerAction = {
+  mode: "ADD_TIMER";
+  payload?: Timer;
+};
+
+type StartTimersAction = {
+  mode: "START_TIMERS";
+};
+type StopTimersAction = {
+  mode: "STOP_TIMERS";
+};
+
+type Action = AddTimerAction | StartTimersAction | StopTimersAction;
+
+function timersReducer(state: TimersState, action: Action): TimersState {
+  if (action.mode === "START_TIMERS") {
+    return {
+      ...state,
+      isRunning: true,
+    };
+  }
+  if (action.mode === "STOP_TIMERS") {
+    return {
+      ...state,
+      isRunning: false,
+    };
+  }
+  if (action.mode === "ADD_TIMER" && action.payload) {
+    return {
+      ...state,
+      timers: [
+        ...state.timers,
+        {
+          duration: action.payload.duration,
+          name: action.payload.name,
+        },
+      ],
+    };
+  }
+
+  return state;
+}
+
 export default function TimersContextProvider(
   props: TimersContextProviderProps
 ) {
+  const [timersState, dispatch] = useReducer(timersReducer, initialState);
+
   const contextProviderInput: TimersContextValue = {
-    timers: [],
-    isRunning: false,
+    timers: initialState.timers,
+    isRunning: initialState.isRunning,
     addTimer(timerData: Timer) {
-      //...
+      dispatch({ mode: "ADD_TIMER", payload: timerData });
     },
     startTimers() {
-      //...
+      dispatch({ mode: "START_TIMERS" });
     },
     stopTimers() {
-      //...
+      dispatch({ mode: "STOP_TIMERS" });
     },
   };
 
